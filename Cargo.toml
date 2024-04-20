@@ -1,0 +1,41 @@
+[package]
+authors = ["me"]
+edition = "2021"
+readme = "README.md"
+name = "my-stm32-embassy-template"
+version = "0.1.0"
+
+[dependencies]
+cortex-m = { version = "*", features = ["critical-section-single-core"] }
+cortex-m-rt = "*"
+panic-probe = { version = "*", features = ["print-defmt"] }
+
+defmt = "*"
+defmt-rtt = "*"
+
+embassy-stm32 = { version = "*", features = ["defmt", "time-driver-any", "stm32f411re", "memory-x", "unstable-pac", "exti"] }
+embassy-executor = { version = "*", features = ["nightly", "arch-cortex-m", "executor-thread", "defmt", "integrated-timers"] }
+embassy-time = { version = "*", features = ["defmt", "defmt-timestamp-uptime", "tick-hz-32_768"] }
+
+# embedded-io = { version = "*" }
+# embedded-io-async = { version = "*" }
+# futures = { version = "*", default-features = false, features = ["async-await"] }
+# heapless = { version = "*", default-features = false }
+# embedded-storage = "*"
+# micromath = "*"
+# chrono = { version = "*", default-features = false}
+
+[patch.crates-io]
+embassy-stm32 = { git = "https://github.com/embassy-rs/embassy" }
+embassy-executor = { git = "https://github.com/embassy-rs/embassy" }
+embassy-time = { git = "https://github.com/embassy-rs/embassy" }
+
+[[bin]]
+name = "imu-test1"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations
